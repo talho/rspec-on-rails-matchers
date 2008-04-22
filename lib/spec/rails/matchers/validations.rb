@@ -1,6 +1,61 @@
 module Spec
   module Rails
     module Matchers
+      class BeValid  #:nodoc:
+
+        def matches?(model)
+          @model = model
+          @model.valid?
+        end
+
+        def failure_message
+          "#{@model.inspect} expected to be valid but had errors:\n  #{@model.errors.full_messages.join("\n  ")}"
+        end
+
+        def negative_failure_message
+          "#{@model.inspect} expected to have errors, but it did not"
+        end
+
+        def description
+          "be valid"
+        end
+
+        private
+          attr_reader :type, :name, :model
+      end
+
+      def be_valid
+        BeValid.new
+      end
+
+      class HaveErrorOn  #:nodoc:
+        def initialize(attribute)
+          @attribute=attribute
+        end
+
+        def matches?(model)
+          @model=model
+          @model.valid?
+          !@model.errors.on(@attribute).nil?
+        end
+
+        def description
+          "have error on #{@attribute}"
+        end
+
+        def failure_message
+          " expected to have error on #{@attribute} but doesn't"
+        end
+
+        def negative_failure_message
+          "#{@attribute} expected to not have errors, but it had: #{@model.errors.on(@attribute).inspect}"
+        end
+      end
+
+      def have_error_on(attribute)
+        HaveErrorOn.new(attribute)
+      end
+      
       def validate_presence_of(attribute)
         return simple_matcher("model to validate the presence of #{attribute}") do |model|
           model.send("#{attribute}=", nil)
