@@ -23,7 +23,7 @@ module Spec
             unless @association.macro == @type
               @errors << "expected #{@model} to have a #{@type.inspect} association called #{name.inspect}, but got #{@association.macro.inspect}" 
             end
-            declared_options = @association.options.reject {|k,| !@options.keys.include?(k) }
+            declared_options = @association.options.slice(*@options.keys)
             unless declared_options == @options
               @errors << "expected #{@type.inspect} #{@name.inspect} association with #{@options.inspect}, but got #{declared_options.inspect}"
             end
