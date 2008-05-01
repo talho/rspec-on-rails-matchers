@@ -48,9 +48,9 @@ module Spec
         end
       end
 
-      def have_form_puting_to(url_or_path, id)
-        return simple_matcher("have a form submitting via PUT to '#{url_or_path}/#{id}'") do |response|
-          have_tag("form[method=post][action=#{url_or_path}/#{id}]").matches?(response)
+      def have_form_puting_to(url_or_path)
+        return simple_matcher("have a form submitting via PUT to '#{url_or_path}'") do |response|
+          have_tag("form[method=post][action=#{url_or_path}]").matches?(response)
           have_tag("input[name=_method][type=hidden][value=put]").matches?(response)
         end
       end
