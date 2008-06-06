@@ -88,6 +88,10 @@ module Spec
         end
       end
       alias_method :with_link_to, :have_link_to
+      
+      def content_for(name)
+        response.template.instance_variable_get("@content_for_#{name}")
+      end
     end
   end
 end
