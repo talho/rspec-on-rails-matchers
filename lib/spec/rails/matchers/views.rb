@@ -67,7 +67,7 @@ module Spec
       end
       alias_method :with_text_area_for, :have_text_area_for
       
-      %w(text password checkbox).each do |input|
+      %w(text password checkbox file).each do |input|
         define_method("have_#{input}_field_for") do |model, attribute|
           HTMLElementMatcher.new(self, 'input',
             :type => input,
