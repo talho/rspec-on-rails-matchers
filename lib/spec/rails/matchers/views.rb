@@ -38,8 +38,12 @@ module Spec
         def build_attributes
           @attributes.collect {|attr,value| "[#{attr}='#{value}']" }.join
         end
-        
-        
+      end
+      
+      def have_form_getting_from(url_or_path)
+        return simple_matcher("have a form submitting via GET to '#{url_or_path}'") do
+          have_tag("form[method=get][action=#{url_or_path}]").matches?(response)
+        end
       end
       
       def have_form_posting_to(url_or_path)
@@ -48,7 +52,7 @@ module Spec
         end
       end
 
-      def have_form_puting_to(url_or_path)
+      def have_form_putting_to(url_or_path)
         return simple_matcher("have a form submitting via PUT to '#{url_or_path}'") do |response|
           have_tag("form[method=post][action=#{url_or_path}]").matches?(response)
           have_tag("input[name=_method][type=hidden][value=put]").matches?(response)
